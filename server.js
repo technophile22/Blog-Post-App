@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const postRouter = require('./routes/posts')
+const Post = require('./models/post')
+const methodOverride = require('method-override');
 const app = express()
 
 mongoose.connect('mongodb://localhost:27017/blog-post-app', {
@@ -12,18 +14,11 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended : false }))
 
+app.use(methodOverride('_method'))
+
 //Home route (posts/index)
-app.get('/', function(req, res){
-    const posts = [{
-        title: 'test post 1 ',
-        createdAt: new Date(),
-        description: 'Test Description'
-    },
-    {
-        title: 'test post 2 ',
-        createdAt: new Date(),
-        description: 'Test Description'
-    }]
+app.get('/', async function(req, res){
+   const posts = await Post.find().sort( {createdAt : 'desc' });
     res.render('posts/index', {posts : posts });
 });
 
