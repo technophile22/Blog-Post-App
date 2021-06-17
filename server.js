@@ -18,10 +18,11 @@ app.use(methodOverride('_method'))
 
 //Home route (posts/index)
 app.get('/', async function(req, res){
-   const posts = await Post.find().sort( {createdAt : 'desc' });
+    const posts = await Post.find().sort( {createdAt : 'desc' });
     res.render('posts/index', {posts : posts });
 });
 
+//Posts route (routes/posts.js)
 app.use('/posts', postRouter);
 
 app.listen(5000);

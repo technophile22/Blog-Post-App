@@ -27,16 +27,19 @@ router.post('/', async (req, res, next) => {
     next()
 }, savePostAndRedirect('new'))
 
+//post method for edit post
 router.put('/:id', async (req, res, next) => {
     req.post = await Post.findById(req.params.id);
     next()
 }, savePostAndRedirect('edit'))
 
+//post method for delete post
 router.delete('/:id', async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
     res.redirect('/');
 })
 
+//helper function for new and edit post
 function savePostAndRedirect(path){
     return async (req, res) => {
         let post = req.post;
